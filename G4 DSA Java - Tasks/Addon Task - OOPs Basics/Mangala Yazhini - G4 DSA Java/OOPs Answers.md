@@ -228,7 +228,7 @@ Composition: It is the way of having an object of class in another class since i
 ```
 
 Inheritance: It is the process of extending the features of a generic type to its sub types. 
-
+```
 class Bag{
     String companyName; 
     int price; 
@@ -238,7 +238,7 @@ class Bag{
 class SchoolBag extends Bag{
   String color;  
 }
-
+```
 10. What are access modifiers, and how do they help control access to data and behavior?
 
 Access modifiers are used to restrict the ability of class to control other classes to maintain proper integrity and privacy. 
