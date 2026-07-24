@@ -1,21 +1,21 @@
-// Step A: DOM elements pakad lo - baar baar getElementById na likhna pade
+// Step 1: Grab the DOM elements – so you don't have to keep writing `getElementById` repeatedly.
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 const loadingDiv = document.getElementById("loading");
 const errorDiv = document.getElementById("error");
 const resultDiv = document.getElementById("result");
 
-// Step B: teeno states ko chhupane ka helper - baar baar 3 line na likhni pade
+// Step B: Helper to hide all three states – so you don't have to write three lines repeatedly.
 function hideAll() {
     loadingDiv.style.display = "none";
     errorDiv.style.display = "none";
     resultDiv.style.display = "none";
 }
 
-// Step C: button click pe trigger
+// Step C:trigger on button click
 searchButton.addEventListener("click", searchPokemon);
 
-// Bonus: Enter key se bhi search ho jaye
+// Bonus: Search can also be triggered using the Enter key.
 searchInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         searchPokemon();
@@ -23,10 +23,10 @@ searchInput.addEventListener("keydown", (e) => {
 });
 
 async function searchPokemon() {
-    // 1. Input value nikalo aur clean karo
+  // 1. Get and clean the input value
     const query = searchInput.value.trim().toLowerCase();
 
-    // 2. Validate - empty check pehle, aage kuch mat karo
+    // 2. Validation - Check for empty first; do nothing further.
     if (query === "") {
         hideAll();
         errorDiv.textContent = "Please enter a Pokémon name or ID";
@@ -34,22 +34,22 @@ async function searchPokemon() {
         return; // yahin ruk jao, fetch tak mat jao
     }
 
-    // 3. Purana state clear karo, loading dikhao
+    // 3. Clear the previous state, show the loading screen.
     hideAll();
     loadingDiv.style.display = "block";
 
-    // 4. Ab API call - try/catch ke andar kyunki fail ho sakta hai
+    // 4. Now, place the API call inside a try-catch block, as it might fail.
     try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${query}/`);
 
-        // fetch khud fail nahi karta 404 pe - isliye manually check karna padta hai
+        // Fetch doesn't automatically log a 404 error, so you have to check manually.
         if (!response.ok) {
             throw new Error("Pokemon not found");
         }
 
         const data = await response.json();
 
-        // 5. Data mil gaya - ab display karo
+        // 5. Data received – now display it.
         displayPokemon(data);
 
     } catch (err) {
@@ -60,11 +60,11 @@ async function searchPokemon() {
 }
 
 function displayPokemon(data) {
-    // abilities, types arrays hain - map() se list banani padi
+    //abilities, types are arrays - created list from map()
     const abilities = data.abilities.map(a => a.ability.name).join(", ");
     const types = data.types.map(t => t.type.name).join(", ");
 
-    // stats ek array of objects hai - map() se li list banayi
+    // 'stats' is an array of objects – a list was created using map().
     const statsList = data.stats
         .map(s => `<li>${s.stat.name}: ${s.base_stat}</li>`)
         .join("");
